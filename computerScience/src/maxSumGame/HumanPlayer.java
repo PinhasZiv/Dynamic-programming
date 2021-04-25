@@ -11,7 +11,7 @@ public class HumanPlayer extends Player {
 	}
 
 	public void turn(int left, int right) {
-		boolean choice = optimalChoice(left, right);
+		direction bestChoice = optimalChoice(left, right);
 		int userChoice = -1;
 		int newScore = 0;
 
@@ -20,7 +20,7 @@ public class HumanPlayer extends Player {
 			newScore = this.score + board.getCards()[right];
 		} else {
 
-			if (choice) {
+			if (bestChoice == direction.RIGHT) {
 				System.out.println("Your best choice is: " + right);
 			} else {
 				System.out.println("Your best choice is: " + left);
@@ -31,14 +31,14 @@ public class HumanPlayer extends Player {
 				userChoice = sc.nextInt();
 			} while (userChoice != right && userChoice != left);
 
-			if (choice) {
+			if (bestChoice == direction.RIGHT) {
 				newScore = this.score + board.getCards()[right];
 			} else {
 				newScore = this.score + board.getCards()[left];
 			}
 		}
 		setScore(newScore);
-		board.setBoardAfterTurn(choice);
+		board.setBoardAfterTurn(bestChoice);
 	}
 
 }

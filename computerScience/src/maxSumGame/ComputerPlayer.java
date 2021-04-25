@@ -9,9 +9,9 @@ public class ComputerPlayer extends Player {
 
 	
 	public void turn(int left, int right) {
-		boolean choice = optimalChoice(left, right);
+		direction choice = optimalChoice(left, right);
 		int newScore = 0;
-		if(choice) {
+		if(choice == direction.RIGHT) {
 			System.out.println("The computer choose: " + right);
 			newScore = this.score + board.getCards()[right];
 		} else {

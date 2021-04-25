@@ -17,6 +17,7 @@ public class MaxSumGame {
 			if(board.getSize() == 0) {
 				break;
 			}
+			
 			System.out.println("The game array is: ");
 			board.printBoard();
 			System.out.println();
@@ -24,6 +25,7 @@ public class MaxSumGame {
 		} while (board.getSize() > 0);
 		
 		int diff = humPlayer.getScore() - comPlayer.getScore();
+		
 		if(diff > 0) {
 		System.out.println("YOU WIN :) , The score is - " + humPlayer.getScore() + " : " + comPlayer.getScore() + ", You win with: " + diff);
 		} else if (diff < 0){

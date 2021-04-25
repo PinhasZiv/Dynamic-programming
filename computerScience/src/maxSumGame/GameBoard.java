@@ -1,7 +1,8 @@
 package maxSumGame;
 
-import java.awt.print.Printable;
 import java.util.Random;
+
+import maxSumGame.Player.direction;
 
 public class GameBoard {
 
@@ -11,13 +12,13 @@ public class GameBoard {
 	private int leftFlag; // sign for border of the last left card
 	private int rightFlag; // sign for border of the last right card
 	private int[][] optionTable;
-
+	
 	public GameBoard() {
 		resetBoard();
 		size = 7;
 		leftFlag = 0;
 		rightFlag = 6;
-		this.optionTable = makeTable(cards, size);
+		this.optionTable = makeTableOfMaxScores(cards, size);
 	}
 
 	public void resetBoard() {
@@ -62,8 +63,8 @@ public class GameBoard {
 	}
 
 	// boolean for: true=player chose right, false=player chose left
-	public void setBoardAfterTurn(boolean select) {
-		if (select) {
+	public void setBoardAfterTurn(direction select) {
+		if (select == direction.RIGHT) {
 			rightFlag--;
 		} else {
 			leftFlag++;
@@ -71,7 +72,8 @@ public class GameBoard {
 		size--;
 	}
 
-	private int[][] makeTable(int arr[], int size) {
+	// Fill out a table of dynamic programming notes adapted to the current game.
+	private int[][] makeTableOfMaxScores(int arr[], int size) {
 
 		int table[][] = new int[size][size];
 		int row, left, right, x, y, z;
