@@ -2,7 +2,7 @@ package maxSumGame;
 
 import java.util.Random;
 
-import maxSumGame.Player.direction;
+import maxSumGame.Player.Direction;
 
 public class GameBoard {
 
@@ -63,8 +63,8 @@ public class GameBoard {
 	}
 
 	// boolean for: true=player chose right, false=player chose left
-	public void setBoardAfterTurn(direction select) {
-		if (select == direction.RIGHT) {
+	public void setBoardAfterTurn(Direction select) {
+		if (select == Direction.RIGHT) {
 			rightFlag--;
 		} else {
 			leftFlag++;

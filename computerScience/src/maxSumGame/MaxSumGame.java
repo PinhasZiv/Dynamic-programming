@@ -3,35 +3,33 @@ package maxSumGame;
 public class MaxSumGame {
 
 	public static void main(String[] args) {
-		
+
 		GameBoard board = new GameBoard();
-		ComputerPlayer comPlayer = new ComputerPlayer(board);
 		HumanPlayer humPlayer = new HumanPlayer(board);
-	
+		ComputerPlayer comPlayer = new ComputerPlayer(board);
+		Player[] players = { humPlayer, comPlayer };
+		int playerIndex = 0;
+
 		do {
 			System.out.println("The game array is: ");
 			board.printBoard();
 			System.out.println();
-			humPlayer.turn(board.getLeftFlag(), board.getRightFlag());
 			
-			if(board.getSize() == 0) {
-				break;
-			}
-			
-			System.out.println("The game array is: ");
-			board.printBoard();
-			System.out.println();
-			comPlayer.turn(board.getLeftFlag(), board.getRightFlag());
+			players[playerIndex].turn(board.getLeftFlag(), board.getRightFlag());
+			playerIndex = (playerIndex + 1) % players.length; // choose the next player to play.
+		
 		} while (board.getSize() > 0);
-		
-		int diff = humPlayer.getScore() - comPlayer.getScore();
-		
-		if(diff > 0) {
-		System.out.println("YOU WIN :) , The score is - " + humPlayer.getScore() + " : " + comPlayer.getScore() + ", You win with: " + diff);
-		} else if (diff < 0){
-			System.out.println("YOU LOSE :( , The score is - " + humPlayer.getScore() + " : " + comPlayer.getScore() + ", You lose with: " + diff);
+
+		int diff = players[0].getScore() - players[1].getScore();
+
+		if (diff > 0) {
+			System.out.println("YOU WIN :) , The score is - " + players[0].getScore() + " : " + players[1].getScore()
+					+ ", You win with: " + diff);
+		} else if (diff < 0) {
+			System.out.println("YOU LOSE :( , The score is - " + players[0].getScore() + " : " + players[1].getScore()
+					+ ", You lose with: " + diff);
 		} else {
-			System.out.println("DRAW!!! :| , The score is - " + humPlayer.getScore() + " : " + comPlayer.getScore());
+			System.out.println("DRAW!!! :| , The score is - " + players[0].getScore() + " : " + players[1].getScore());
 		}
 	}
 
