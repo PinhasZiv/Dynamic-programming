@@ -2,6 +2,8 @@ package maxSumGame;
 
 import java.util.Scanner;
 
+import javax.jws.soap.SOAPBinding.Use;
+
 public class HumanPlayer extends Player {
 
 	private static Scanner sc = new Scanner(System.in);
@@ -30,15 +32,17 @@ public class HumanPlayer extends Player {
 				System.out.print("Please enter your choice: (" + left + " or " + right + "):");
 				userChoice = sc.nextInt();
 			} while (userChoice != right && userChoice != left);
-
-			if (bestChoice == Direction.RIGHT) {
+			
+			
+			if (userChoice == right) {
 				newScore = this.score + board.getCards()[right];
 			} else {
 				newScore = this.score + board.getCards()[left];
 			}
 		}
 		setScore(newScore);
-		board.setBoardAfterTurn(bestChoice);
+		Direction select = (userChoice == right) ? select = Direction.RIGHT : Direction.LEFT;
+		board.setBoardAfterTurn(select);
 	}
 
 }
