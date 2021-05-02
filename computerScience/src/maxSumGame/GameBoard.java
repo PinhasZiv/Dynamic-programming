@@ -62,7 +62,7 @@ public class GameBoard {
 		return optionTable;
 	}
 
-	// boolean for: true=player chose right, false=player chose left
+
 	public void setBoardAfterTurn(Direction select) {
 		if (select == Direction.RIGHT) {
 			rightFlag--;
