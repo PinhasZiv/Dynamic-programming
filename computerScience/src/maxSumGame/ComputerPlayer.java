@@ -7,7 +7,7 @@ public class ComputerPlayer extends Player {
 		
 	}
 
-	
+	// Performs the turn according to the optimal choice
 	public void turn(int left, int right) {
 		Direction choice = optimalChoice(left, right);
 		int newScore = 0;

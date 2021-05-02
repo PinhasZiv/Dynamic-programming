@@ -18,9 +18,9 @@ public class MaxSumGame {
 			players[playerIndex].turn(board.getLeftFlag(), board.getRightFlag());
 			playerIndex = (playerIndex + 1) % players.length; // choose the next player to play.
 		
-		} while (board.getSize() > 0);
+		} while (board.getSize() > 0); // stop while loop when board is empty.
 
-		int diff = players[0].getScore() - players[1].getScore();
+		int diff = players[0].getScore() - players[1].getScore(); // Calculating the difference between the players scores
 
 		if (diff > 0) {
 			System.out.println("YOU WIN :) , The score is - " + players[0].getScore() + " : " + players[1].getScore()
