@@ -1,3 +1,4 @@
+// Pinhas Ziv 315709139, Alex Chen 312286545
 package maxSumGame;
 
 import java.util.Random;
@@ -7,35 +8,24 @@ import maxSumGame.Player.Direction;
 public class GameBoard {
 
 	private Random rnd = new Random();
-	private int[] cards = new int[7];
 	private int size;
+	private int[] cards;
 	private int leftFlag; // sign for border of the last left card
 	private int rightFlag; // sign for border of the last right card
-	private int[][] optionTable;
+	private int[][] optionTable; // Dynamic Programming memorization Table
 	
 	public GameBoard() {
-		resetBoard();
-		size = 7;
-		leftFlag = 0;
-		rightFlag = 6;
+		this.size = 7;
+		this.cards = new int[size];
+		this.leftFlag = 0;
+		this.rightFlag = 6;
+		makeBoard();
 		this.optionTable = makeTableOfMaxScores(cards, size);
-	}
-
-	public void resetBoard() {
-		for (int i = 0; i < cards.length; i++) {
-			cards[i] = rnd.nextInt(3) + 1;
-		}
+	
 	}
 
 	public int getSize() {
 		return size;
-	}
-
-	public void printBoard() {
-		for (int i = leftFlag; i <= rightFlag; i++) {
-			System.out.print(cards[i] + " ");
-		}
-		System.out.println("");
 	}
 
 	public int[] getCards() {
@@ -62,7 +52,19 @@ public class GameBoard {
 		return optionTable;
 	}
 
-
+	public void makeBoard() {
+		for (int i = 0; i < size; i++) {
+			cards[i] = rnd.nextInt(3) + 1;
+		}
+	}
+	
+	public void printBoard() {
+		for (int i = leftFlag; i <= rightFlag; i++) {
+			System.out.print(cards[i] + " ");
+		}
+		System.out.println("");
+	}
+	
 	public void setBoardAfterTurn(Direction select) {
 		if (select == Direction.RIGHT) {
 			rightFlag--;
@@ -72,7 +74,7 @@ public class GameBoard {
 		size--;
 	}
 
-	// Fill out a table of dynamic programming notes adapted to the current game.
+	// Fill out a table of dynamic programming memorization adapted to the current game.
 	private int[][] makeTableOfMaxScores(int arr[], int size) {
 
 		int table[][] = new int[size][size];

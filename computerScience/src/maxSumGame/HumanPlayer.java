@@ -1,3 +1,4 @@
+// Pinhas Ziv 315709139, Alex Chen 312286545
 package maxSumGame;
 
 import java.util.Scanner;

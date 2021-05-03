@@ -1,10 +1,10 @@
+// Pinhas Ziv 315709139, Alex Chen 312286545
 package maxSumGame;
 
 public class ComputerPlayer extends Player {
 
 	public ComputerPlayer(GameBoard board) {
 		super(board);
-		
 	}
 
 	// Performs the turn according to the optimal choice

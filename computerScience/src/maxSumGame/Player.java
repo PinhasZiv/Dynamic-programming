@@ -1,3 +1,4 @@
+// Pinhas Ziv 315709139, Alex Chen 312286545
 package maxSumGame;
 
 public abstract class Player {
@@ -36,6 +37,7 @@ public abstract class Player {
 		} else {
 			return Direction.LEFT;
 		}
+		
 
 	}
 }
