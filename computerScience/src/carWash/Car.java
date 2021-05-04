@@ -50,6 +50,13 @@ public class Car extends Thread {
 	public long getStartTime() {
 		return startTime;
 	}
+
+	public boolean canExitC() {
+		if(this.complexA.getNumOfExitCar() == this.complexA.getNumOfCars()) {
+			return true;
+		}
+		return false;
+	}
 	
 	public static synchronized void printMessage(Message message, Car car) {
 

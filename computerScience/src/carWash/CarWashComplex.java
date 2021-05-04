@@ -63,7 +63,7 @@ public class CarWashComplex {
 		car.setCurrComplex(complex);
 		Car.printMessage(Message.complexEntery, car);
 		if (this.getComplexName() == 'C') {
-			if (getNumOfCarInComplex() == getNumOfCars()) {
+			if (car.canExitC()) {
 				notifyAll();
 				carExit(car);
 			} else {
@@ -77,7 +77,7 @@ public class CarWashComplex {
 		}
 	}
 
-	public void washCar(Car car) {
+	public synchronized void washCar(Car car) {
 		try {
 			numOfWashingMachines.acquire();
 			Car.printMessage(Message.washEntery, car);
