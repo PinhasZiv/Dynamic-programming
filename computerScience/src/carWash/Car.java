@@ -1,5 +1,5 @@
 package carWash;
-
+/* Pinhas Ziv 315709139, Alex Chen 312286545 */
 import carWash.CarWashComplex.Message;
 
 public class Car extends Thread {
@@ -51,6 +51,7 @@ public class Car extends Thread {
 		return startTime;
 	}
 
+	// check if all cars left complex A
 	public boolean canExitC() {
 		if(this.complexA.getNumOfExitCar() == this.complexA.getNumOfCars()) {
 			return true;
@@ -58,6 +59,7 @@ public class Car extends Thread {
 		return false;
 	}
 	
+	//print massages
 	public static synchronized void printMessage(Message message, Car car) {
 
 		long currTime = System.currentTimeMillis();

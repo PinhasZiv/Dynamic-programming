@@ -1,5 +1,5 @@
 package carWash;
-
+/* Pinhas Ziv 315709139, Alex Chen 312286545 */
 import java.util.concurrent.Semaphore;
 
 public class CarWashComplex {
@@ -17,9 +17,9 @@ public class CarWashComplex {
 
 	public CarWashComplex(char name, int machinesNum, int numOfCars, double averageCarWashTime) {
 		this.complexName = name;
-		this.numOfWashingMachines = new Semaphore(machinesNum, true);
+		this.numOfWashingMachines = new Semaphore(machinesNum, true); // semaphore with fairness
 		this.averageCarWashTime = averageCarWashTime;
-		this.numOfCars = numOfCars;
+		this.numOfCars = numOfCars; // the number of cars throughout the life of the program
 	}
 
 	public synchronized Semaphore getNumOfWashingMachines() {
@@ -58,11 +58,12 @@ public class CarWashComplex {
 		this.numOfCars = numOfCars;
 	}
 
+	// car enter into complex
 	public synchronized void carEntry(Car car, char complex) {
 		setNumOfCarInComplex(getNumOfCarInComplex() + 1);
 		car.setCurrComplex(complex);
 		Car.printMessage(Message.complexEntery, car);
-		if (this.getComplexName() == 'C') {
+		if (this.getComplexName() == 'C') { // Ensuring that all cars left complex A
 			if (car.canExitC()) {
 				notifyAll();
 				carExit(car);
@@ -77,6 +78,7 @@ public class CarWashComplex {
 		}
 	}
 
+	// car enter into washing machine
 	public synchronized void washCar(Car car) {
 		try {
 			numOfWashingMachines.acquire();
@@ -90,10 +92,11 @@ public class CarWashComplex {
 		carExit(car);
 	}
 
+	// car exit complex
 	public void carExit(Car car) {
 		setNumOfCarInComplex(getNumOfCarInComplex() - 1);
 		setNumOfExitCar(getNumOfExitCar() + 1);
-		if (this.getComplexName() == 'C') {
+		if (this.getComplexName() == 'C') { // print message if car left last complex (C)
 			Car.printMessage(Message.carExit, car);
 			Thread.interrupted();
 		}
