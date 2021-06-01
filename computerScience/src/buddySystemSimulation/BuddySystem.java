@@ -32,6 +32,7 @@ public class BuddySystem {
 				break;
 			}
 		} while (userChoice != 4);
+		sc.close();
 	}
 
 	public BuddySystem() {
@@ -98,7 +99,7 @@ public class BuddySystem {
 		System.out.println("Enter process number to remove: ");
 		int remove = sc.nextInt();
 		try {
-			beggin = this.processesMap.get(remove);
+			beggin = this.processesMap.remove(remove);
 		} catch (NullPointerException e) {
 			System.out.println("The process is not in system memory");
 			return;
@@ -123,7 +124,7 @@ public class BuddySystem {
 		if (node.isLeaf()) {
 			return node;
 		}
-		if (beggin <= node.getLeftChild().getBegginNodeIndex()) {
+		if (beggin <= node.getLeftChild().getEndNodeIndex()) {
 			return findProcessNode(beggin, node.getLeftChild());
 		} else {
 			return findProcessNode(beggin, node.getRightChild());

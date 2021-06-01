@@ -179,6 +179,7 @@ public class MemoryNode {
 			} else {
 				setExternalFreg(0);
 				setInternalFreg(this.nodeSize - this.process.getSize());
+				setMaxProcess(0);
 			}
 		}
 	}
@@ -187,7 +188,7 @@ public class MemoryNode {
 		if (node.getNodeSize() == 1) {
 			return false;
 		}
-		if (node.getNodeSize() / 2 > proc.getSize()) {
+		if (node.getNodeSize() / 2 >= proc.getSize()) {
 			int newSize = node.getNodeSize() / 2;
 			node.setLeftChild(new MemoryNode(node.MEMORY_SIZE, newSize, node.getBegginNodeIndex(),
 					node.getBegginNodeIndex() + newSize - 1));
