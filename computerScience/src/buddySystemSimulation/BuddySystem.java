@@ -77,11 +77,19 @@ public class BuddySystem {
 	}
 
 	public void case1() {
+		boolean validInput = false;
 		int id = 0;
 		do {
 			System.out.println("Enter process ID: (has to be positive number) ");
 			id = sc.nextInt();
-		} while (id < 1);
+			if(processesMap.containsKey(id)) {
+				System.out.println("There is a process in the system that contains the same id");
+			} else if(id < 1) {
+				System.out.println("ID nust be a positive number");
+			} else {
+				validInput = true;
+			}
+		} while (!validInput);
 		System.out.println("Enter size of process: ");
 		int size = sc.nextInt();
 		Process proc = new Process(size, id);
@@ -90,7 +98,7 @@ public class BuddySystem {
 			this.processesMap.put(proc.getName(), proc.getBegginIndex());
 			System.out.println("Memory allocated for the process " + proc.getName());
 		} else {
-			System.out.println("can't allocate process. external fragmentation: " + this.memory.getExternalFreg());
+			System.out.println("can't allocate process. external fragmentation: " + this.memory.getExternalfrag());
 		}
 	}
 
@@ -105,7 +113,7 @@ public class BuddySystem {
 			return;
 		}
 		MemoryNode processNode = findProcessNode(beggin, this.memory);
-		processNode.setProcess(null); // also update external & internal freg.
+		processNode.setProcess(null); // also update external & internal Frag.
 		MemoryNode.recursiveMerge(this.memory, processNode);
 		System.out.println("The process was successfully removed from memory");
 	}
@@ -117,7 +125,8 @@ public class BuddySystem {
 		System.out.println("Available blocks: ");
 		printEmptyNodes(this.memory);
 		System.out.println();
-
+		System.out.println("Internal Fragmantation: " + this.memory.getInternalfrag());
+		System.out.println();
 	}
 
 	public MemoryNode findProcessNode(int beggin, MemoryNode node) {
