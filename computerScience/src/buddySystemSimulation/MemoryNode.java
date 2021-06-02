@@ -49,7 +49,11 @@ public class MemoryNode {
 	}
 
 	public int getInternalFreg() {
-		return internalFreg;
+		if (this.isLeaf()) {
+			return this.internalFreg;
+		}
+		return this.leftChild.getInternalFreg() + this.rightChild.getInternalFreg();
+
 	}
 
 	public void setInternalFreg(int Internal) {
@@ -93,7 +97,7 @@ public class MemoryNode {
 	}
 
 	public int getMaxProcess() {
-		return maxProcess;
+		return this.maxProcess;
 	}
 
 	public void setMaxProcess(int maxProcess) {
@@ -105,9 +109,11 @@ public class MemoryNode {
 		if (this.process == null) {
 			setExternalFreg(this.getNodeSize());
 			setInternalFreg(0);
+			setMaxProcess(this.getNodeSize());
 		} else {
 			setExternalFreg(0);
 			setInternalFreg(this.getExternalFreg() - process.getSize());
+			setMaxProcess(0);
 		}
 	}
 
@@ -142,15 +148,29 @@ public class MemoryNode {
 				return true;
 			}
 		} else {
-			if (node.leftChild.getMaxProcess() >= proc.getSize()) {
+			if (chooseSideToAllocate(proc)) {
 				return addProcessToNode(proc, node.getLeftChild());
-			}
-			if (node.rightChild.getMaxProcess() >= proc.getSize()) {
-				return addProcessToNode(proc, node.rightChild);
 			} else {
-				return false;
+				return addProcessToNode(proc, node.rightChild);
 			}
+//			if (node.leftChild.getMaxProcess() >= proc.getSize()) {
+//				return addProcessToNode(proc, node.getLeftChild());
+//			}
+//			if (node.rightChild.getMaxProcess() >= proc.getSize()) {
+//				return addProcessToNode(proc, node.rightChild);
+//			} else {
+//				return false;
+//			}
 		}
+	}
+
+	// return true: if should allocate in leftSide, false: if should allocate in
+	// rightSide.
+	public boolean chooseSideToAllocate(Process proc) {
+		if (this.leftChild.getMaxProcess() - proc.getSize() <= this.rightChild.getMaxProcess() - proc.getSize() && this.leftChild.getExternalFreg() > proc.getSize()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void addProcess(Process proc, MemoryNode node) {
@@ -163,13 +183,13 @@ public class MemoryNode {
 		if (!this.isLeaf()) {
 			if (changeNode.endNodeIndex <= this.leftChild.endNodeIndex) {
 				this.leftChild.fixFreg(changeNode);
-				setExternalFreg(this.leftChild.externalFreg + this.rightChild.externalFreg);
-				setInternalFreg(this.leftChild.internalFreg + this.rightChild.internalFreg);
+				setExternalFreg(this.leftChild.getExternalFreg() + this.rightChild.getExternalFreg());
+				setInternalFreg(this.leftChild.getInternalFreg() + this.rightChild.getInternalFreg());
 				setMaxProcess(Math.max(this.leftChild.getExternalFreg(), this.rightChild.getExternalFreg()));
 			} else {
 				this.rightChild.fixFreg(changeNode);
-				setExternalFreg(this.rightChild.externalFreg + this.leftChild.externalFreg);
-				setInternalFreg(rightChild.internalFreg + this.leftChild.internalFreg);
+				setExternalFreg(this.rightChild.getExternalFreg() + this.leftChild.getExternalFreg());
+				setInternalFreg(rightChild.getInternalFreg() + this.leftChild.getInternalFreg());
 				setMaxProcess(Math.max(this.leftChild.getExternalFreg(), this.rightChild.getExternalFreg()));
 			}
 		} else {
