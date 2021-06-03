@@ -1,19 +1,17 @@
 package buddySystemSimulation;
 
 public class MemoryNode {
-	private final int MEMORY_SIZE;
 	private int nodeSize;
 	private int externalfrag;
 	private int internalfrag;
 	private int begginNodeIndex;
 	private int endNodeIndex;
 	private Process process;
-	private int maxProcess;
+	private int maxProcess; // represent the max size of process that can enter into this node (recursively)
 	private MemoryNode leftChild;
 	private MemoryNode rightChild;
 
-	public MemoryNode(int mEMORY_SIZE, int nodeSize, int beggin, int end) {
-		this.MEMORY_SIZE = mEMORY_SIZE;
+	public MemoryNode(int nodeSize, int beggin, int end) {
 		this.nodeSize = nodeSize;
 		this.externalfrag = this.nodeSize;
 		this.internalfrag = 0;
@@ -23,10 +21,6 @@ public class MemoryNode {
 		this.maxProcess = this.nodeSize;
 		this.leftChild = null;
 		this.rightChild = null;
-	}
-
-	public int getMEMORY_SIZE() {
-		return MEMORY_SIZE;
 	}
 
 	public int getNodeSize() {
@@ -135,7 +129,7 @@ public class MemoryNode {
 				fixfrag(node);
 				return true;
 			} else {
-				boolean success = node.splitNode(proc, node); // return true if split successfully, otherwise: false
+				boolean success = node.splitNode(proc, node); // return true if split the node successfully, otherwise: false
 				if (!success) {
 					return false;
 				}
@@ -148,7 +142,7 @@ public class MemoryNode {
 				return true;
 			}
 		} else {
-			if (chooseSideToAllocate(proc, node)) {
+			if (chooseSideToAllocate(proc, node)) { // check which side is the best to put the process in the memory
 				return addProcessToNode(proc, node.leftChild);
 			} else {
 				return addProcessToNode(proc, node.rightChild);
@@ -163,7 +157,7 @@ public class MemoryNode {
 			return true;
 		}
 		if(node.leftChild.getMaxProcess() - proc.getSize() <= node.rightChild.getMaxProcess() - proc.getSize()
-				&& node.leftChild.getMaxProcess() >= proc.getSize()) {
+				&& node.leftChild.getMaxProcess() >= proc.getSize()) { // Tests which of the children leaves a smaller internal fragmentation
 			return true;
 		}
 		return false;
@@ -175,6 +169,7 @@ public class MemoryNode {
 		}
 	}
 
+	// fix fragmentation of the memory tree
 	private void fixfrag(MemoryNode changeNode) {
 		if (!this.isLeaf()) {
 			if (changeNode.endNodeIndex <= this.leftChild.endNodeIndex) {
@@ -200,22 +195,23 @@ public class MemoryNode {
 		}
 	}
 
+	// split node until his size much to process size (At a power of 2)
 	private boolean splitNode(Process proc, MemoryNode node) {
 		if (node.getNodeSize() == 1) {
 			return false;
 		}
 		if (node.getNodeSize() / 2 >= proc.getSize()) {
 			int newSize = node.getNodeSize() / 2;
-			node.setLeftChild(new MemoryNode(node.MEMORY_SIZE, newSize, node.getBegginNodeIndex(),
+			node.setLeftChild(new MemoryNode(newSize, node.getBegginNodeIndex(),
 					node.getBegginNodeIndex() + newSize - 1));
-			node.setRightChild(new MemoryNode(node.MEMORY_SIZE, newSize, node.getBegginNodeIndex() + newSize,
+			node.setRightChild(new MemoryNode(newSize, node.getBegginNodeIndex() + newSize,
 					node.getEndNodeIndex()));
 			return splitNode(proc, node.leftChild);
 		} else {
 			return true;
 		}
 	}
-
+	// merge nodes in the memory tree until there are no merges to do
 	public static void recursiveMerge(MemoryNode beggin, MemoryNode removeNode) {
 		boolean isChange = true;
 		while (isChange) {
@@ -223,11 +219,12 @@ public class MemoryNode {
 		}
 	}
 
+	// get to nodes and merge them into one big node. return: true if successful, otherwise: false;
 	public static boolean merge(MemoryNode node, MemoryNode removeNode) {
 		if (!node.isLeaf()) {
 			if (node.leftChild.getExternalfrag() == node.leftChild.getNodeSize()
 					&& node.rightChild.getExternalfrag() == node.rightChild.getNodeSize()) {
-				mergeNode(node);
+				setNodeFields(node);
 				return true;
 			} else {
 				boolean change = merge(node.leftChild, removeNode) || merge(node.rightChild, removeNode);
@@ -238,7 +235,7 @@ public class MemoryNode {
 		return false;
 	}
 
-	private static void mergeNode(MemoryNode node) {
+	private static void setNodeFields(MemoryNode node) {
 		node.setExternalfrag(node.getNodeSize());
 		node.setInternalfrag(0);
 		node.setLeftChild(null);

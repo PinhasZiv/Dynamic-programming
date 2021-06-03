@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class BuddySystem {
 
 	private static Scanner sc = new Scanner(System.in);
-	private int size;
+//	private int size;
 	private MemoryNode memory;
-	private HashMap<Integer, Integer> processesMap; // from processName to begginIndex.
+	private HashMap<Integer, Integer> processesMap; // from processName to his begginIndex.
 
 	public static void main(String[] args) {
 		BuddySystem bs = new BuddySystem();
@@ -18,7 +18,7 @@ public class BuddySystem {
 			do {
 				printMenu();
 				userChoice = sc.nextInt();
-			} while (userChoice > 4 || userChoice < 1);
+			} while (userChoice > 4 || userChoice < 1); // check valid input
 
 			switch (userChoice) {
 			case 1:
@@ -37,16 +37,7 @@ public class BuddySystem {
 
 	public BuddySystem() {
 		getMemorySize();
-		this.memory = new MemoryNode(this.size, this.size, 0, this.size - 1);
 		this.processesMap = new HashMap<>();
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
 	}
 
 	public MemoryNode getMemory() {
@@ -60,11 +51,11 @@ public class BuddySystem {
 					"Please enter the size of memory, in bytes:\n" + "(The size should be an Integer of power 2)");
 			size = sc.nextInt();
 		} while (!isPowerOfTwo(size));
-		this.size = size;
+		this.memory = new MemoryNode(size, 0, size - 1);
 	}
 
 	public static boolean isPowerOfTwo(int n) {
-		return ((n & n - 1) == 0 && n != 0);
+		return ((n & n - 1) == 0 && n > 0);
 	}
 
 	public static void printMenu() {
@@ -85,7 +76,7 @@ public class BuddySystem {
 			if(processesMap.containsKey(id)) {
 				System.out.println("There is a process in the system that contains the same id");
 			} else if(id < 1) {
-				System.out.println("ID nust be a positive number");
+				System.out.println("ID must be a positive number");
 			} else {
 				validInput = true;
 			}
@@ -129,6 +120,7 @@ public class BuddySystem {
 		System.out.println();
 	}
 
+	// run over the tree to find in which node to put the process
 	public MemoryNode findProcessNode(int beggin, MemoryNode node) {
 		if (node.isLeaf()) {
 			return node;
